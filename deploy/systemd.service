@@ -1,0 +1,22 @@
+[Unit]
+Description=Django Demo Project Gunicorn daemon
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/ubuntu/django-demo
+ExecStart=/home/ubuntu/django-demo/venv/bin/gunicorn --config /home/ubuntu/django-demo/deploy/gunicorn.conf.py demo_project.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+# Environment variables
+Environment=DJANGO_SETTINGS_MODULE=demo_project.settings
+EnvironmentFile=/home/ubuntu/django-demo/.env
+
+[Install]
+WantedBy=multi-user.target

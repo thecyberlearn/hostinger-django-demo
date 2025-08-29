@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+
+{% block title %}About - Django Demo Project{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="mb-4">About This Project</h1>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Purpose</h5>
+                    <p class="card-text">This Django demo project is designed as a production-ready template for testing VPS deployment workflows. It serves as a foundation for future Django projects with all the essential configurations already in place.</p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Features</h5>
+                    <ul class="list-unstyled">
+                        <li>✓ Minimal dependencies for fast deployment</li>
+                        <li>✓ Environment-based configuration</li>
+                        <li>✓ SQLite development / PostgreSQL production</li>
+                        <li>✓ Static files handling with WhiteNoise</li>
+                        <li>✓ Contact form functionality</li>
+                        <li>✓ Simple blog system</li>
+                        <li>✓ Bootstrap-based responsive UI</li>
+                        <li>✓ Production security settings</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Tech Stack</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><strong>Backend:</strong> Django 4.2.7</li>
+                                <li><strong>Database:</strong> SQLite/PostgreSQL</li>
+                                <li><strong>Server:</strong> Gunicorn</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><strong>Frontend:</strong> Bootstrap 5</li>
+                                <li><strong>Static Files:</strong> WhiteNoise</li>
+                                <li><strong>Config:</strong> python-decouple</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="{% url 'contact' %}" class="btn btn-primary">Get in Touch</a>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
