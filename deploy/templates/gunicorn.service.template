@@ -1,0 +1,23 @@
+# Gunicorn Service Template
+# Copy to: /etc/systemd/system/gunicorn.service
+# Replace: {{PROJECT_NAME}}, {{APP_NAME}}
+
+[Unit]
+Description=Gunicorn daemon for {{APP_NAME}}
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=django
+Group=www-data
+WorkingDirectory=/var/www/{{APP_NAME}}
+Environment=DJANGO_SETTINGS_MODULE={{PROJECT_NAME}}.settings
+EnvironmentFile=/var/www/{{APP_NAME}}/.env
+ExecStart=/var/www/{{APP_NAME}}/venv/bin/gunicorn \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          {{PROJECT_NAME}}.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

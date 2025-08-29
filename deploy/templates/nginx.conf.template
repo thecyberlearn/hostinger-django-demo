@@ -1,0 +1,109 @@
+# Nginx Configuration Template
+# Copy to: /etc/nginx/sites-available/{{APP_NAME}}
+# Replace: {{DOMAIN}}, {{VPS_IP}}, {{APP_NAME}}
+
+server {
+    listen 80;
+    server_name {{DOMAIN}} {{VPS_IP}};
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:;" always;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_types
+        text/plain
+        text/css
+        text/xml
+        text/javascript
+        application/json
+        application/javascript
+        application/xml+rss
+        application/atom+xml
+        image/svg+xml;
+
+    # Rate limiting
+    limit_req_zone $binary_remote_addr zone=login:10m rate=10r/m;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+        
+        # Timeout settings
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+
+    location /static/ {
+        alias /var/www/{{APP_NAME}}/staticfiles/;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        
+        # Optional: Serve compressed files
+        location ~* \.(css|js)$ {
+            gzip_static on;
+        }
+    }
+
+    location /media/ {
+        alias /var/www/{{APP_NAME}}/media/;
+        expires 1y;
+        add_header Cache-Control "public";
+    }
+
+    # Django admin rate limiting
+    location /admin/login/ {
+        limit_req zone=login burst=5 nodelay;
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+    # Block access to sensitive files
+    location ~* /\.(?!well-known\/) {
+        deny all;
+    }
+
+    location ~* /(requirements\.txt|\.env|deploy/|\.git/|venv/) {
+        deny all;
+    }
+
+    # Optional: favicon
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    # Optional: robots.txt
+    location = /robots.txt {
+        log_not_found off;
+        access_log off;
+    }
+}
+
+# HTTPS Configuration (uncomment after SSL setup)
+# server {
+#     listen 443 ssl http2;
+#     server_name {{DOMAIN}};
+# 
+#     ssl_certificate /etc/letsencrypt/live/{{DOMAIN}}/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/{{DOMAIN}}/privkey.pem;
+#     
+#     # SSL Security
+#     ssl_protocols TLSv1.2 TLSv1.3;
+#     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+#     ssl_prefer_server_ciphers off;
+#     
+#     # HSTS
+#     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+#     
+#     # Include the same location blocks as HTTP version above
+# }
