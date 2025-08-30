@@ -163,8 +163,8 @@ DJANGO_PROJECT_DIR=$(sudo -u django find "$PROJECT_PATH" -name "settings.py" -ex
 DJANGO_PROJECT_NAME=$(basename "$DJANGO_PROJECT_DIR")
 
 # Create Gunicorn configuration
-mkdir -p "$PROJECT_PATH/deploy"
-cat > "$PROJECT_PATH/deploy/gunicorn.conf.py" << EOF
+mkdir -p "$PROJECT_PATH/config"
+cat > "$PROJECT_PATH/config/gunicorn.conf.py" << EOF
 # Gunicorn configuration for $PROJECT_NAME
 bind = "unix:/run/gunicorn-$PROJECT_NAME.sock"
 workers = 3
@@ -204,7 +204,7 @@ WorkingDirectory=$PROJECT_PATH
 Environment=PYTHONPATH=$PROJECT_PATH
 EnvironmentFile=$PROJECT_PATH/.env
 ExecStart=$PROJECT_PATH/venv/bin/gunicorn \\
-          --config $PROJECT_PATH/deploy/gunicorn.conf.py \\
+          --config $PROJECT_PATH/config/gunicorn.conf.py \\
           $DJANGO_PROJECT_NAME.wsgi:application
 ExecReload=/bin/kill -s HUP \$MAINPID
 KillMode=mixed
