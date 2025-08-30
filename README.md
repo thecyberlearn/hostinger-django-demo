@@ -58,8 +58,7 @@ ssh akvps "cd /home/django/hostinger-django-demo && sudo bash deploy/deploy-proj
 - `deploy/deploy-project.sh` - Multi-project system with auto repo naming
 
 **Documentation:**
-- `MULTI_PROJECT_SETUP.md` - Complete multi-project guide  
-- `SIMPLE_DEPLOY.md` - Quick deployment reference
+- `MULTI_PROJECT_SETUP.md` - Complete multi-project guide
 
 **Setup:**
 - `setup-django-user.sh` - Create django user on fresh VPS
