@@ -34,16 +34,10 @@ ssh-keygen -f '/home/amit/.ssh/known_hosts' -R '69.62.81.168'
 scp setup-django-user.sh akvps:/root/
 ssh akvps "sudo bash /root/setup-django-user.sh"
 
-# 3. Clone and deploy (choose one option below)
+# 3. Clone and deploy
 ```
 
-### Option 1: Simple Single Project
-```bash
-ssh akvps "cd /home/django && git clone https://github.com/thecyberlearn/hostinger-django-demo.git"
-ssh akvps "cd /home/django/hostinger-django-demo && sudo bash deploy/production-deploy.sh"
-```
-
-### Option 2: Multi-Project System  
+### Deploy Your Project
 ```bash
 ssh akvps "cd /home/django && git clone https://github.com/thecyberlearn/hostinger-django-demo.git"
 ssh akvps "cd /home/django/hostinger-django-demo && sudo bash deploy/deploy-project.sh https://github.com/thecyberlearn/hostinger-django-demo.git"
@@ -53,9 +47,8 @@ ssh akvps "cd /home/django/hostinger-django-demo && sudo bash deploy/deploy-proj
 
 ## 📁 Key Files
 
-**Main Deployment Scripts:**
-- `deploy/production-deploy.sh` - Simple single project deployment
-- `deploy/deploy-project.sh` - Multi-project system with auto repo naming
+**Main Deployment Script:**
+- `deploy/deploy-project.sh` - Deploys any Django project with auto repo naming
 
 **Documentation:**
 - `MULTI_PROJECT_SETUP.md` - Complete multi-project guide
