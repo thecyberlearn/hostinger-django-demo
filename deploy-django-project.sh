@@ -1,8 +1,8 @@
 #!/bin/bash
 # Multi-Project Django Deployment Script
 # Automatically extracts GitHub repo name for project naming
-# Usage: sudo bash deploy-project.sh <GITHUB_REPO_URL>
-# Example: sudo bash deploy-project.sh https://github.com/thecyberlearn/hostinger-django-demo.git
+# Usage: sudo bash deploy-django-project.sh <GITHUB_REPO_URL>
+# Example: sudo bash deploy-django-project.sh https://github.com/user/my-django-app.git
 
 set -e
 
